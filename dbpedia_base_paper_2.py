@@ -25,11 +25,11 @@ labels=['Company',
 ]
 train_data=pd.read_csv('C:\\Users\\User\\Downloads\\dbpedia_csv\\dbpedia_csv\\train_copy.csv', encoding = 'iso-8859-1',dtype={'Class':int,'Value':str,'Description':str})
 train_data=pd.DataFrame(train_data)
-train_data=train_data.sample(frac=0.8)
+train_data=train_data.sample(frac=1)
 print(train_data.head())
 train_data.to_csv('dbpedia_shuffle.csv')
 #train_data=pd.read_csv('dbpedia_train_3.csv', encoding = 'latin1')
-train_data_chunk=pd.read_csv('dbpedia_shuffle.csv', encoding = 'iso-8859-1',chunksize=60000,dtype={'Class':int,'Value':str,'Description':str})
+train_data_chunk=pd.read_csv('dbpedia_shuffle.csv', encoding = 'iso-8859-1',usecols=['Class','Value','Description'],chunksize=40000,dtype={'Class':int,'Value':str,'Description':str})
 #train_data=pd.read_csv('dbpedia_train_3.csv', encoding = 'iso-8859-1')
 #train_data_chunk=pd.read_csv('dbpedia_train_3.csv', encoding = 'iso-8859-1',chunksize=15000,dtype={'Class':int,'Value':str,'Description':str})
 print("train data chunks are", train_data_chunk)
