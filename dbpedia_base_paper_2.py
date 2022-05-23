@@ -29,7 +29,7 @@ train_data=train_data.sample(frac=1)
 print(train_data.head())
 train_data.to_csv('dbpedia_shuffle.csv')
 #train_data=pd.read_csv('dbpedia_train_3.csv', encoding = 'latin1')
-train_data_chunk=pd.read_csv('dbpedia_shuffle.csv', encoding = 'iso-8859-1',usecols=['Class','Value','Description'],chunksize=40000,dtype={'Class':int,'Value':str,'Description':str})
+train_data_chunk=pd.read_csv('dbpedia_shuffle.csv', encoding = 'iso-8859-1',usecols=['Class','Value','Description'],chunksize=10000,dtype={'Class':int,'Value':str,'Description':str})
 #train_data=pd.read_csv('dbpedia_train_3.csv', encoding = 'iso-8859-1')
 #train_data_chunk=pd.read_csv('dbpedia_train_3.csv', encoding = 'iso-8859-1',chunksize=15000,dtype={'Class':int,'Value':str,'Description':str})
 print("train data chunks are", train_data_chunk)
@@ -53,7 +53,8 @@ for i in train_data_chunk:
  train_data=X_train
  test_data=X_test
  lens = train_data.Description.str.len()
- print(lens.mean(), lens.std(), lens.max())
+ print(lens.mean(), lens.std(), lens.max(),lens.count())
+ print(plt.hist(lens))
 #print(test_data.head())
 #print(train_data.describe())
  print("length of train data :" , len(train_data))
