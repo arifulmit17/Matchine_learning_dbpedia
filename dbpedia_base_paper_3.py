@@ -8,6 +8,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 import matplotlib.pyplot as plt
+import class_distribution_plot as clp
 labels=['Company',
 'EducationalInstitution',
 'Artist',
@@ -23,14 +24,17 @@ labels=['Company',
 'Film',
 'WrittenWork'
 ]
-train_data=pd.read_csv('C:\\Users\\User\\Downloads\\dbpedia_csv\\dbpedia_csv\\train_copy.csv', encoding = 'iso-8859-1',dtype={'Class':int,'Value':str,'Description':str})
+columns=['Class','Value','Description']
+train_data=pd.read_csv('C:\\Users\\User\\Downloads\\dbpedia_csv\\dbpedia_csv\\train_copy.csv', encoding = 'iso-8859-1',dtype={'Class':int,'Value':str,'Description':str},header=None,names=columns)
 train_data=pd.DataFrame(train_data)
-train_data=train_data.sample(frac=0.8)
-#train_data=pd.read_csv('dbpedia_train_3.csv', encoding = 'latin1')
-train_data_chunk=pd.read_csv('C:\\Users\\User\\Downloads\\dbpedia_csv\\dbpedia_csv\\train_copy.csv', encoding = 'iso-8859-1',chunksize=15000,dtype={'Class':int,'Value':str,'Description':str})
-#train_data=pd.read_csv('dbpedia_train_3.csv', encoding = 'iso-8859-1')
-#train_data_chunk=pd.read_csv('dbpedia_train_3.csv', encoding = 'iso-8859-1',chunksize=15000,dtype={'Class':int,'Value':str,'Description':str})
+train_data=train_data.sample(frac=1)
+print(train_data.head())
+train_data.to_csv('dbpedia_shuffle.csv')
+import scipy.stats as stat
+train_data_chunk=pd.read_csv('dbpedia_shuffle.csv', encoding = 'iso-8859-1',usecols=['Class','Value','Description'],chunksize=10000,dtype={'Class':int,'Value':str,'Description':str})
 print("train data chunks are", train_data_chunk)
+#train_data=pd.read_csv('dbpedia_train_3.csv', encoding = 'latin1')
+
 for i in train_data_chunk:
  print(i.shape)
  train_data=i
@@ -51,11 +55,23 @@ for i in train_data_chunk:
 #test_data=pd.read_csv('Dbpedia_test.csv')
  train_data=X_train
  test_data=X_test
+ count=set(train_data['Class'])
+ print('Number of unique classes=',count)
+ c=[]
+ c=X_train['Class']
+ print('Number of classes= ',c.count())
+ nv=train_data.isnull().sum(axis = 0)
+ print('Null class values=',nv)
+ vc=c.value_counts()
+ print('Each class number= ', vc)
+ clp.vchist(vc)
  lens = train_data.Description.str.len()
  print(lens.mean(), lens.std(), lens.max())
 #print(test_data.head())
 #print(train_data.describe())
  print("length of train data :" , len(train_data))
+ 
+ 
  import re, string
  re_tok = re.compile(f'([{string.punctuation}“”¨«»®´·º½¾¿¡§£₤‘’])')
  def tokenize(s): return re_tok.sub(r' \1 ', s).split()
@@ -99,3 +115,4 @@ for i in train_data_chunk:
 #submid = pd.DataFrame({'id': subm["id"]})
  submission = pd.DataFrame(preds, columns = labels)
  submission.to_csv('submission_2.csv', index=False)
+ 
