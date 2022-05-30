@@ -9,6 +9,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 import matplotlib.pyplot as plt
 import class_distribution_plot as clp
+import probability_density_show as pds
 labels=['Company',
 'EducationalInstitution',
 'Artist',
@@ -64,9 +65,10 @@ for i in train_data_chunk:
  print('Null class values=',nv)
  vc=c.value_counts()
  print('Each class number= ', vc)
- clp.vchist(vc)
+ #clp.vchist(vc)
  lens = train_data.Description.str.len()
  print(lens.mean(), lens.std(), lens.max())
+ pds.lenshist(lens)
 #print(test_data.head())
 #print(train_data.describe())
  print("length of train data :" , len(train_data))
