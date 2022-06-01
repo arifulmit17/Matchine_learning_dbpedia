@@ -10,6 +10,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 import matplotlib.pyplot as plt
 import class_distribution_plot as clp
 import probability_density_show as pds
+import class_variation_plot as cvp
 labels=['Company',
 'EducationalInstitution',
 'Artist',
@@ -68,11 +69,11 @@ for i in train_data_chunk:
  #clp.vchist(vc)
  lens = train_data.Description.str.len()
  print(lens.mean(), lens.std(), lens.max())
- pds.lenshist(lens)
+ #pds.lenshist(lens)
 #print(test_data.head())
 #print(train_data.describe())
  print("length of train data :" , len(train_data))
- 
+ cvp.lenhist(lens)
  
  import re, string
  re_tok = re.compile(f'([{string.punctuation}“”¨«»®´·º½¾¿¡§£₤‘’])')
